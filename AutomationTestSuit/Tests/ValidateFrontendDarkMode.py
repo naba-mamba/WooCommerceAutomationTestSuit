@@ -5,7 +5,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 # Set up the ChromeDriver service
-driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_argument('--no-sandbox')
+options.add_argument('--headless')
+options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Remote(
+    command_executor='http://localhost:4444/wd/hub',
+    options=options
+)
 
 # Open the front-end page
 driver.get("http://woocommerce-test-site.local/")
