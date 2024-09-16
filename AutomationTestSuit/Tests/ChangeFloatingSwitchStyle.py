@@ -14,16 +14,16 @@ username = os.getenv("MY_APP_USERNAME")
 password = os.getenv("MY_APP_PASSWORD")
 
 # Set up the ChromeDriver service
-#driver = webdriver.Chrome()
-
-options = webdriver.ChromeOptions()
-options.add_argument('--no-sandbox')
-options.add_argument('--headless')
-options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Remote(
-    command_executor='http://localhost:4444/wd/hub',
-    options=options
-)
+driver = webdriver.Chrome()
+#
+# options = webdriver.ChromeOptions()
+# options.add_argument('--no-sandbox')
+# options.add_argument('--headless')
+# options.add_argument('--disable-dev-shm-usage')
+# driver = webdriver.Remote(
+#     command_executor='http://localhost:4444/wd/hub',
+#     options=options
+# )
 
 # Open the login page
 driver.get("http://woocommerce-test-site.local/my-account/")
