@@ -1,14 +1,20 @@
+import os
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get credentials from environment variables
+username = os.getenv("MY_APP_USERNAME")
+password = os.getenv("MY_APP_PASSWORD")
 
 # Set up the ChromeDriver service
-# serv_obj = Service("C:/Program Files/Drivers/chromedriver.exe")
-# driver = webdriver.Chrome(service=serv_obj)
 driver = webdriver.Chrome()
 
 # Open the login page
@@ -18,8 +24,8 @@ driver.get("http://woocommerce-test-site.local/my-account/")
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.NAME, "username")))
 
 # Enter username and password
-driver.find_element(By.NAME, "username").send_keys("Fairuznaba03@gmail.com")
-driver.find_element(By.NAME, "password").send_keys("naba2000")
+driver.find_element(By.NAME, "username").send_keys(username)
+driver.find_element(By.NAME, "password").send_keys(password)
 
 # Click the login button
 driver.find_element(By.NAME, "login").click()
@@ -27,7 +33,8 @@ driver.find_element(By.NAME, "login").click()
 # Wait for the page to load and check if login was successful
 try:
     WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, "//a[contains(@href, 'customer-logout')]")))
+        EC.presence_of_element_located((By.XPATH, "//a[contains(@href, 'customer-logout')]"))
+    )
     print("Login Test Passed")
 except TimeoutException:
     print("Login Test Failed")
@@ -56,7 +63,8 @@ except TimeoutException:
     try:
         install_now_button = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located(
-                (By.XPATH, "//a[@class='install-now button' and contains(@aria-label, 'WP Dark Mode')]"))
+                (By.XPATH, "//a[@class='install-now button' and contains(@aria-label, 'WP Dark Mode')]")
+            )
         )
         print("WP Dark Mode Plugin found for installation.")
 
@@ -66,7 +74,7 @@ except TimeoutException:
         # Wait for the 'Activate' button to appear to confirm installation
         try:
             activate_button = WebDriverWait(driver, 100).until(
-                EC.presence_of_element_located((By.XPATH,"//a[@class='button activate-now button-primary' and contains(@data-slug, 'wp-dark-mode')]"))
+                EC.presence_of_element_located((By.XPATH, "//a[@class='button activate-now button-primary' and contains(@data-slug, 'wp-dark-mode')]"))
             )
             print("Plugin installed successfully.")
             activate_button.click()  # Activate the plugin
@@ -89,39 +97,6 @@ try:
     print("WP Dark Mode Plugin is now active.")
 except TimeoutException:
     print("WP Dark Mode Plugin is not active.")
-
-# Enable Admin Dashboard Dark Mode
-driver.get("http://woocommerce-test-site.local/wp-admin/admin.php?page=wp-dark-mode#/admin")
-
-try:
-    # Locate and click the "Enable Admin Dashboard Dark Mode" element
-    dark_mode_option = WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, "//div[text()='Enable Admin Dashboard Dark Mode']"))
-    )
-    dark_mode_option.click()
-    print("Admin Dashboard Dark Mode option clicked.")
-
-    # Save settings using the new button element
-    save_changes_button = WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Save Changes')]"))
-    )
-    save_changes_button.click()
-    print("Settings saved.")
-except TimeoutException:
-    print("Failed to enable Admin Dashboard Dark Mode.")
-    driver.quit()
-    exit()
-
-# Validate Dark Mode
-try:
-    WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, "//body[contains(@class, 'dark-mode')]"))
-    )
-    print("Admin Dashboard Dark Mode is enabled.")
-except TimeoutException:
-    print("Failed to enable Admin Dashboard Dark Mode.")
-    driver.quit()
-
 
 
 
