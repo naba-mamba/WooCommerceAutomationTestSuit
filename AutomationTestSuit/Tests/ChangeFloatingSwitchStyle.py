@@ -69,7 +69,7 @@ try:
 
     # Select the Floating Switch Style (with class wp-dark-mode-switch-3)
     floating_switch_option = WebDriverWait(driver, 30).until(
-        EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'wp-dark-mode-switch-3')]"))
+        EC.element_to_be_clickable((By.XPATH, "//span[contains(@class, 'bg-slate-200') and contains(@class, 'border-white')]"))
     )
     floating_switch_option.click()
     print("Floating Switch Style selected.")
